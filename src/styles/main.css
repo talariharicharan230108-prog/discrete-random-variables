@@ -1,0 +1,879 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ==========================================================================
+   1. COLOR SYSTEM & CSS VARIABLES
+   ========================================================================== */
+:root {
+  --bg-primary: #070b14;
+  --bg-secondary: #0d1322;
+  --bg-calc: #0a0f1c;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(30, 41, 59, 0.85);
+  --bg-input: rgba(13, 19, 34, 0.9);
+  --bg-nav: rgba(7, 11, 20, 0.85);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-blue: #3b82f6;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --border-highlight: rgba(99, 102, 241, 0.35);
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.35);
+  --grid-line: rgba(255, 255, 255, 0.025);
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-title: 'Plus Jakarta Sans', var(--font-sans);
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Backward compatibility aliases */
+  --bg-main: var(--bg-primary);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-calc: #f8fafc;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: rgba(241, 245, 249, 0.95);
+  --bg-input: #ffffff;
+  --bg-nav: rgba(248, 250, 252, 0.9);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --accent-primary: #4f46e5;
+  --accent-secondary: #7c3aed;
+  --accent-cyan: #0891b2;
+  --accent-emerald: #059669;
+  --accent-amber: #d97706;
+  --accent-rose: #e11d48;
+  --accent-blue: #2563eb;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.18);
+  --border-highlight: rgba(79, 70, 229, 0.35);
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.1);
+  --grid-line: rgba(0, 0, 0, 0.025);
+
+  --bg-main: var(--bg-primary);
+}
+
+/* ==========================================================================
+   2. GLOBAL RESET & BASE TYPOGRAPHY
+   ========================================================================== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: normal;
+  background: 
+    radial-gradient(circle at 15% 10%, rgba(99,102,241,0.08), transparent 30%),
+    radial-gradient(circle at 85% 20%, rgba(6,182,212,0.06), transparent 30%),
+    var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+p {
+  line-height: 1.65;
+  letter-spacing: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+h1 {
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+h2 {
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h4 {
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, svg, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Mathematical background grid */
+.bg-math-grid {
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ==========================================================================
+   3. SECTION SPACING ARCHITECTURE (BREATHABLE LAYOUT)
+   ========================================================================== */
+.main-content {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container, .section-container {
+  width: min(1280px, calc(100% - 56px));
+  margin: 0 auto;
+}
+
+.section {
+  padding: 100px 0;
+  position: relative;
+  height: auto;
+  width: 100%;
+}
+
+.section-sm {
+  padding: 70px 0;
+  position: relative;
+  height: auto;
+  width: 100%;
+}
+
+.calculator-section {
+  padding: 100px 0;
+  background: var(--bg-calc);
+  border-top: 1px solid var(--border);
+  position: relative;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+
+.insights-section {
+  margin-top: 0;
+  padding: 100px 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  position: relative;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+
+.real-world-section {
+  margin-top: 0;
+  padding: 100px 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border);
+  position: relative;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+
+.theory-section {
+  margin-top: 0;
+  padding: 100px 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  position: relative;
+  height: auto;
+  width: 100%;
+  overflow: visible;
+}
+
+/* ==========================================================================
+   4. HEADINGS & HIERARCHY PATTERNS
+   ========================================================================== */
+.page-header {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 90px 24px 55px;
+}
+
+.page-header .eyebrow {
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+
+.page-header h1 {
+  margin: 0 0 20px;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.page-header p {
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 48px auto;
+}
+
+.eyebrow-label, .section-header .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: var(--accent-cyan);
+  margin-bottom: 18px;
+}
+
+.section-title, .section-header h2 {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  line-height: 1.15;
+}
+
+.section-subtitle, .section-header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.lab-header {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 55px auto;
+}
+
+.lab-header .eyebrow {
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+
+.lab-header h1 {
+  margin-bottom: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-weight: 800;
+}
+
+.lab-header p {
+  line-height: 1.7;
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   5. NAVBAR (BREATHABLE, SPACIOUS, 1050PX BREAKPOINT)
+   ========================================================================== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 76px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  background: rgba(7, 11, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  position: relative;
+  padding: 8px 4px;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-title {
+  font-family: var(--font-title);
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.logo-subtitle {
+  margin-top: 4px;
+  font-size: 0.725rem;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   6. HERO SECTION
+   ========================================================================== */
+.hero {
+  min-height: calc(100vh - 76px);
+  padding: 130px 0 90px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   7. BUTTONS
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(99, 102, 241, 0.35);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  color: white;
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.25);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(6, 182, 212, 0.35);
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  backdrop-filter: blur(10px);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  color: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   8. GLASS CARDS & CARD SPACING
+   ========================================================================== */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1200px) {
+  .glass-card {
+    padding: 36px;
+  }
+}
+
+.glass-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   9. REAL-WORLD CASE STUDY CARDS & INFO BLOCKS
+   ========================================================================== */
+.real-world-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .real-world-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .real-world-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.case-study-card {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 20px;
+}
+
+@media (min-width: 1200px) {
+  .case-study-card {
+    padding: 36px;
+  }
+}
+
+.case-study-card h3 {
+  margin: 18px 0 18px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.info-block {
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+}
+
+.info-block-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+
+.info-block-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.case-study-card .btn {
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   10. CALCULATOR CARD, STEPS, FORMS & INPUTS
+   ========================================================================== */
+.calculator-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .calculator-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+.calculator-card {
+  padding: 32px;
+  border-radius: 20px;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  .calculator-card {
+    padding: 36px;
+  }
+}
+
+.step-section {
+  margin-bottom: 28px;
+}
+
+.step-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-help {
+  margin-top: 5px;
+  line-height: 1.4;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.calculator-input {
+  height: 48px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  width: 100%;
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border);
+  color: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calculator-input:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+/* ==========================================================================
+   11. RESULT CARD & MOMENTS HIERARCHY
+   ========================================================================== */
+.result-card {
+  padding: 32px;
+  border-radius: 20px;
+  height: auto;
+  min-height: 280px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 27, 75, 0.5));
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  backdrop-filter: blur(16px);
+}
+
+@media (min-width: 1024px) {
+  .result-card {
+    padding: 36px;
+  }
+}
+
+.result-title {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.result-value {
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 1;
+  margin: 10px 0 24px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-family: var(--font-mono);
+  color: #fff;
+}
+
+.result-explanation {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  line-height: 1.65;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.moments-label {
+  margin-bottom: 12px;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.moment-card {
+  padding: 18px;
+  min-height: 82px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.moment-label {
+  margin-bottom: 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.moment-value {
+  line-height: 1.1;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   12. INSIGHTS SECTION GRID
+   ========================================================================== */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .insights-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  .insights-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ==========================================================================
+   13. FORMULA DISPLAY & CHARTS
+   ========================================================================== */
+.formula-card {
+  padding: 28px;
+  border-radius: 18px;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+}
+
+.formula {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-family: var(--font-mono);
+  text-align: center;
+  padding: 18px;
+  color: var(--accent-cyan);
+}
+
+.chart-container {
+  width: 100%;
+  height: 400px;
+  min-width: 0;
+  position: relative;
+}
+
+/* ==========================================================================
+   14. UTILITY CLASSES
+   ========================================================================== */
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.math-font {
+  font-family: var(--font-mono);
+}
+
+/* Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #1e293b;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-blue);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
